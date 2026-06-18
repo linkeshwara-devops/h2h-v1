@@ -1,9 +1,20 @@
 provider "aws" {
-  region = "ap-south-1a"
+  region = "us-east-1"
 }
 
-resource "ami-00427e38fe4ed73c1" {
-  ami           = "REPLACE_WITH_YOUR_AMI"
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+
+  owners = ["137112412989"]
+
+  filter {
+    name   = "name"
+    values = ["al2023-ami-*-x86_64"]
+  }
+}
+
+resource "aws_instance" "devops_server" {
+  ami           = data.aws_ami.amazon_linux.id
   instance_type = "t3.micro"
 
   tags = {
