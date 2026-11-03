@@ -12,7 +12,10 @@ from flask_cors import CORS
 
 # Initialize Flask app
 app = Flask(__name__)
-app.secret_key = 'harvest2hotel-secret-key-2024'
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+
+if not app.secret_key:
+    raise RuntimeError("FLASK_SECRET_KEY environment variable is missing")
 CORS(app, supports_credentials=True)
 
 # Database configuration - SQLite for development
@@ -475,4 +478,4 @@ with app.app_context():
 
 # ==================== RUN APP ====================
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+   app.run(host='0.0.0.0', port=5000, debug=False)
